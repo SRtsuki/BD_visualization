@@ -8,7 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css' // 引入element-ui样式
 Vue.use(Element);
 Vue.use(BaiduMap, {
   // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
-  ak: '7UNbz4033giyAA5fNTd36Hihu02WdHXP'
+  ak:
 })
 
 Vue.config.productionTip = false
