@@ -41,32 +41,40 @@
             </div>
           </el-col>
           <el-col :span="6">
-            <div style="padding-top: 8px">
-              <span class="control-bar-time">10月{{controlbar.DayValue}}日 {{getSelectedTime}}</span>
-            </div>
-            <div>
-              <el-row style="display: flex;padding-top:2vh;padding-left: 2vw;padding-right: 2vw">
-                <div style="border-style: solid;border-width: 4px;border-color: #66CC00;width: 2vw"></div>
-                <div style="border-style: solid;border-width: 4px;border-color: #99CC00;width: 2vw"></div>
-                <div style="border-style: solid;border-width: 4px;border-color: #CCCC00;width: 2vw"></div>
-                <div style="border-style: solid;border-width: 4px;border-color: #CC6600;width: 2vw"></div>
-                <div style="border-style: solid;border-width: 4px;border-color: #BF6000;width: 2vw"></div>
-                <div style="border-style: solid;border-width: 4px;border-color: #BF3000;width: 2vw"></div>
-                <div style="border-style: solid;border-width: 4px;border-color: #BF1800;width: 2vw"></div>
-                <div style="border-style: solid;border-width: 4px;border-color: #BF0000;width: 2vw"></div>
-              </el-row>
-              <el-row style="display: flex;padding-top:1vh;padding-left: 2vw;padding-right: 2vw">
-                <div style="width: 4vw">
-                  <span class="control-bar-tooltip-start">轻微拥堵</span>
-                </div>
-                <div style="width: 12vw"></div>
-                <div style="width: 4vw">
-                  <span class="control-bar-tooltip-end">严重拥堵</span>
-                </div>
-              </el-row>
-            </div>
+            <el-row style="display: flex">
+              <div class="control-bar-time-container">
+                <span class="control-bar-time">10月{{controlbar.DayValue}}日 {{getSelectedTime}}</span>
+              </div>
+<!--              <div class="autoplay-button">-->
+<!--                <i class="el-icon-video-play"></i><br />-->
+<!--                <span class="autoplay-switch-text" v-if="controlbar.autoplay">自动演进中…</span>-->
+<!--              </div>-->
+            </el-row>
+            <el-row>
+              <div>
+                <el-row style="display: flex;padding-top:2vh;padding-left: 2vw;padding-right: 2vw">
+                  <div style="border-style: solid;border-width: 4px;border-color: #66CC00;width: 2vw"></div>
+                  <div style="border-style: solid;border-width: 4px;border-color: #99CC00;width: 2vw"></div>
+                  <div style="border-style: solid;border-width: 4px;border-color: #CCCC00;width: 2vw"></div>
+                  <div style="border-style: solid;border-width: 4px;border-color: #CC6600;width: 2vw"></div>
+                  <div style="border-style: solid;border-width: 4px;border-color: #BF6000;width: 2vw"></div>
+                  <div style="border-style: solid;border-width: 4px;border-color: #BF3000;width: 2vw"></div>
+                  <div style="border-style: solid;border-width: 4px;border-color: #BF1800;width: 2vw"></div>
+                  <div style="border-style: solid;border-width: 4px;border-color: #BF0000;width: 2vw"></div>
+                </el-row>
+                <el-row style="display: flex;padding-top:1vh;padding-left: 2vw;padding-right: 2vw">
+                  <div style="width: 4vw">
+                    <span class="control-bar-tooltip-start">轻微拥堵</span>
+                  </div>
+                  <div style="width: 12vw"></div>
+                  <div style="width: 4vw">
+                    <span class="control-bar-tooltip-end">严重拥堵</span>
+                  </div>
+                </el-row>
+              </div>
+            </el-row>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="5">
             <el-slider
                 style="padding-top: 40px"
                 v-model="controlbar.sliderValue"
@@ -82,7 +90,7 @@
             </div>
           </el-col>
           <el-col :span="3">
-            <el-row style="margin-top:1vh;margin-left: 2vw">
+            <el-row style="margin-top:1vh;margin-left: 1vw">
               <el-switch
                   v-model="controlbar.graystyle"
                   active-text="浅色背景模式"
@@ -90,21 +98,21 @@
               >
               </el-switch>
             </el-row>
-            <el-row style="margin-top:1.5vh;margin-left: 2vw">
+            <el-row style="margin-top:1.5vh;margin-left: 1vw">
+              <el-switch
+                  v-model="controlbar.autoplay"
+                  active-text="自动演进开关"
+                  @change="handleAutoplaySwitch"
+              >
+              </el-switch>
+            </el-row>
+            <el-row style="margin-top:1.5vh;margin-left: 1vw">
               <el-switch
                   v-model="controlbar.showArea"
                   active-text="显示数据范围"
                   @change="handleAreaSwitch"
               >
               </el-switch>
-            </el-row>
-            <el-row>
-              <div
-                  class="control-bar-close-button"
-                  @click="handleCloseControlBar"
-              >
-                <i class="el-icon-close"></i>
-              </div>
             </el-row>
           </el-col>
 <!--          <el-col :span="4">-->
@@ -115,6 +123,16 @@
 <!--            >-->
 <!--            </el-switch>-->
 <!--          </el-col>-->
+          <el-col :span="1">
+            <el-row>
+              <div
+                  class="control-bar-close-button"
+                  @click="handleCloseControlBar"
+              >
+                <i class="el-icon-close"></i>
+              </div>
+            </el-row>
+          </el-col>
         </el-row>
       </div>
     </el-drawer>
@@ -159,16 +177,21 @@ export default {
       drawerVisiable: false,
       controlbar:{
         sliderValue: 0,
+        preTimeValue: -1, // 初始值
         DayValue: 1,
+        preDayValue: 1, // 初始值
         debug: false,
         graystyle: false,
-        showArea: true
+        showArea: true,
+        autoplay:false,
       },
       axiosService2: null,
       // 拥堵数据缓存
       jamData: {},
       // 区域坐标点
-      areaPolygon: null
+      areaPolygon: null,
+      // 自动演进interval
+      autoplayInterval: null
     }
   },
   created() {
@@ -231,9 +254,25 @@ export default {
     },
     handleOpenControlBar(){
       this.drawerVisiable = true;
+      if (this.controlbar.autoplay) {
+        this.setAutoPlay();
+      }
     },
     handleCloseControlBar(){
       this.drawerVisiable = false;
+    },
+    // 设置自动演进
+    setAutoPlay(){
+      if (this.autoplayInterval){
+        clearInterval(this.autoplayInterval);
+      }
+      this.autoplayInterval = setInterval(()=>{
+        if (this.controlbar.sliderValue < 144) {
+          this.controlbar.sliderValue++
+        } else {
+          clearInterval(this.autoplayInterval);
+        }
+      }, 400)
     },
     // 路段拥堵数据转化为颜色
     getJamColor(value){
@@ -272,14 +311,33 @@ export default {
         this.map.setMapStyle({style:'normal'});
       }
     },
+    // 开关自动演进
+    handleAutoplaySwitch(){
+      if (this.controlbar.autoplay) {
+        this.setAutoPlay();
+      } else {
+        if (this.autoplayInterval) {
+          clearInterval(this.autoplayInterval);
+        }
+      }
+    },
     // 开关范围
     handleAreaSwitch(){
       this.handleLoadData();
     },
     // 动态加载
     handleSliderValueChange: debounce(function () {
+      // 判断是否为手动输入
+      if (this.controlbar.DayValue !== this.controlbar.preDayValue || this.controlbar.sliderValue !== (this.controlbar.preTimeValue + 1)){
+        if (this.autoplayInterval){
+          clearInterval(this.autoplayInterval);
+        }
+      }
       //获取结果
       this.handleLoadData();
+      // 保存原值
+      this.controlbar.preDayValue = this.controlbar.DayValue;
+      this.controlbar.preTimeValue = this.controlbar.sliderValue;
     }, 100),
     //
     zeroPad: (num, places) => String(num).padStart(places, '0'),
@@ -420,7 +478,37 @@ body {
 }
 
 .control-bar-time{
-  font-size: 42px;
+  font-size: 2.5vw;
+}
+
+.autoplay-switch-text {
+  font-size: 1px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.el-icon-video-play{
+  margin-top: 0.2vh;
+  font-size: 1.5vw;
+}
+
+.autoplay-button {
+  margin-top: 2vh;
+  margin-left: 0.4vw;
+  margin-right: 1vw;
+  width: 8vh;
+  height: 5vh;
+  border-style: solid;
+  border-radius:7px;
+  border-width: 3px;
+  border-color: #508dFF;
+  color:  #508dFF;
+}
+
+.control-bar-time-container {
+  /*margin-left: auto;*/
+  margin: auto;
+  padding-top: 1vh;
 }
 
 .control-bar-tooltip-start {
@@ -442,8 +530,7 @@ body {
 }
 
 .control-bar-close-button {
-  float: right;
-  margin-top: 2vh;
+  margin: 10vh 0 0 auto;
   width: 3vh;
   height: 3vh;
   background: #F8F8F8;
